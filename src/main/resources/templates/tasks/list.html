@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Tâches - TODO App</title>
+    <title>Liste des Utilisateurs - TODO App</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -30,7 +30,7 @@
             color: #333;
             margin: 0;
         }
-        .back-link {
+        .back-link, .create-link {
             background: #6c757d;
             color: white;
             padding: 10px 20px;
@@ -38,35 +38,16 @@
             border-radius: 5px;
             transition: background 0.2s;
         }
-        .back-link:hover {
+        .back-link:hover, .create-link:hover {
             background: #5a6268;
             text-decoration: none;
             color: white;
         }
-        .filter-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-        }
-        .filter-tab {
-            padding: 10px 20px;
-            background: #f8f9fa;
-            border: none;
-            border-radius: 5px 5px 0 0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-tab.active {
-            background: #007bff;
-            color: white;
-        }
-        .tasks-grid {
+        .users-grid {
             display: grid;
             gap: 20px;
         }
-        .task-card {
+        .user-card {
             border: 1px solid #dee2e6;
             border-radius: 10px;
             padding: 25px;
@@ -74,37 +55,17 @@
             transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
         }
-        .task-card:hover {
+        .user-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
-        .task-card.completed {
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            border-color: #28a745;
-        }
-        .task-card.overdue {
-            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-            border-color: #dc3545;
-        }
-        .task-priority {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        .priority-high { background: #dc3545; }
-        .priority-medium { background: #ffc107; }
-        .priority-low { background: #28a745; }
-
-        .task-header {
+        .user-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 15px;
         }
-        .task-title {
+        .user-name {
             font-size: 1.4em;
             font-weight: bold;
             color: #333;
@@ -112,108 +73,37 @@
             flex: 1;
             padding-right: 20px;
         }
-        .task-status {
-            padding: 6px 15px;
-            border-radius: 25px;
-            font-size: 0.85em;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-        .status-completed {
-            background: #28a745;
-            color: white;
-        }
-        .status-pending {
-            background: #ffc107;
-            color: #212529;
-        }
-        .status-overdue {
-            background: #dc3545;
-            color: white;
-        }
-        .task-description {
+        .user-info {
             color: #666;
             margin-bottom: 20px;
             font-size: 1.05em;
         }
-        .task-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 6px;
-        }
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        .user-info {
-            flex: 1;
-        }
-        .user-name {
-            font-weight: bold;
-            color: #333;
-        }
-        .user-email {
-            font-size: 0.9em;
-            color: #666;
-        }
-        .task-meta {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-        }
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #666;
-        }
-        .meta-icon {
-            font-size: 1.1em;
-        }
-        .task-actions {
+        .user-actions {
             display: flex;
             gap: 10px;
             justify-content: flex-end;
         }
-        .btn-detail {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .btn-detail, .btn-edit, .btn-delete {
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 6px;
             font-weight: 500;
             transition: transform 0.2s;
         }
-        .btn-detail:hover {
+        .btn-detail {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-detail:hover, .btn-edit:hover, .btn-delete:hover {
             transform: translateY(-1px);
-            text-decoration: none;
-            color: white;
-        }
-        .btn-user {
-            background: #6c757d;
-            color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.9em;
-            transition: background 0.2s;
-        }
-        .btn-user:hover {
-            background: #5a6268;
             text-decoration: none;
             color: white;
         }
@@ -231,78 +121,35 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>📋 Liste des Tâches</h1>
-        <a href="/" class="back-link">← Retour à l'accueil</a>
+        <h1>👥 Liste des Utilisateurs</h1>
+        <div>
+            <a href="/users/new" class="create-link">Créer un utilisateur</a>
+            <a href="/" class="back-link">← Retour à l'accueil</a>
+        </div>
     </div>
 
-    <div class="filter-tabs">
-        <button class="filter-tab active" onclick="filterTasks('all')">Toutes</button>
-        <button class="filter-tab" onclick="filterTasks('pending')">En cours</button>
-        <button class="filter-tab" onclick="filterTasks('completed')">Terminées</button>
+    <div th:if="${#lists.isEmpty(users)}" class="empty-state">
+        <h3>Aucun utilisateur trouvé</h3>
+        <p>Il n'y a pas encore d'utilisateurs dans la base de données.</p>
     </div>
 
-    <div th:if="${#lists.isEmpty(tasks)}" class="empty-state">
-        <h3>Aucune tâche trouvée</h3>
-        <p>Il n'y a pas encore de tâches dans la base de données.</p>
-    </div>
-
-    <div th:unless="${#lists.isEmpty(tasks)}" class="tasks-grid">
-        <div th:each="task : ${tasks}"
-             class="task-card"
-             th:classappend="${task.completed} ? 'completed'"
-             th:attr="data-status=${task.completed} ? 'completed' : 'pending'">
-
-            <div class="task-header">
-                <h3 class="task-title" th:text="${task.title}">Titre de la tâche</h3>
-                <span class="task-status"
-                      th:classappend="${task.completed} ? 'status-completed' : (${task.dueDate != null and task.dueDate.isBefore(T(java.time.LocalDateTime).now()) and !task.completed} ? 'status-overdue' : 'status-pending')"
-                      th:text="${task.completed} ? '✅ Terminée' :️ En retard' : '⏳ En cours')">Statut</span>
+    <div th:unless="${#lists.isEmpty(users)}" class="users-grid">
+        <div th:each="user : ${users}" class="user-card">
+            <div class="user-header">
+                <h3 class="user-name" th:text="${user.name}">Nom de l'utilisateur</h3>
             </div>
-
-            <p class="task-description" th:text="${task.description} ?: 'Aucune description disponible'">Description de la tâche</p>
-
-            <div class="task-user">
-                <div class="user-avatar" th:text="${#strings.substring(task.user.name, 0, 1)}">A</div>
-                <div class="user-info">
-                    <div class="user-name" th:text="${task.user.name}">Nom de l'utilisateur</div>
-                </div>
+            <div class="user-info">
+                <p th:text="'Nombre de tâches: ' + ${#lists.size(user.tasks)}">0 tâches</p>
             </div>
-
-            <div class="task-actions">
-                <a th:href="@{'/users/' + ${task.user.id}}" class="btn-user">👤 Voir utilisateur</a>
-                <a th:href="@{'/tasks/' + ${task.id}}" class="btn-detail">📖 Voir détail</a>
+            <div class="user-actions">
+                <a th:href="@{'/users/' + ${user.id}}" class="btn-detail">📖 Voir détail</a>
+                <a th:href="@{'/users/' + ${user.id} + '/edit'}" class="btn-edit">✏️ Modifier</a>
+                <form th:action="@{'/users/' + ${user.id} + '/delete'}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr ?')">🗑️ Supprimer</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-        function filterTasks(filter) {
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            const taskCards = document.querySelectorAll('.task-card');
-            taskCards.forEach(card => {
-                const status = card.getAttribute('data-status');
-                let show = false;
-
-                switch(filter) {
-                    case 'all':
-                        show = true;
-                        break;
-                    case 'pending':
-                        show = status === 'pending';
-                        break;
-                    case 'completed':
-                        show = status === 'completed';
-                        break;
-                }
-
-                card.style.display = show ? 'block' : 'none';
-            });
-        }
-    </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 org\example\data\DataInitializer.class
 org\example\model\User.class
+org\example\services\TaskService.class
 org\example\repository\TaskRepository.class
 org\example\model\Task.class
 org\example\repository\UserRepository.class
