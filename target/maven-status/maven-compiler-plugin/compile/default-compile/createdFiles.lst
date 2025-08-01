@@ -1,0 +1,8 @@
+org\example\data\DataInitializer.class
+org\example\model\User.class
+org\example\repository\TaskRepository.class
+org\example\model\Task.class
+org\example\repository\UserRepository.class
+org\example\Main.class
+org\example\services\UserService.class
+org\example\controllers\MainController.class
